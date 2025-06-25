@@ -31,6 +31,20 @@ function App() {
     };
   }, []);
 
+  // 🔗 Handle when the partner disconnects
+  useEffect(() => {
+    socket.on("partner left", () => {
+      setRoom(null);
+      setMessages([]);
+      alert("Your partner left. Finding a new one...");
+      socket.emit("find partner");
+    });
+
+    return () => {
+      socket.off("partner left");
+    };
+  }, []);
+
   const sendMessage = () => {
     if (msg.trim() && room) {
       socket.emit("chat message", { room, message: msg });
@@ -39,6 +53,9 @@ function App() {
   };
 
   const findNewPartner = () => {
+    if (room) {
+      socket.emit("leave room", room);
+    }
     setMessages([]);
     setRoom(null);
     socket.emit("find partner");
