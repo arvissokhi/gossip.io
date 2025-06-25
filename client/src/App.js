@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import io from "socket.io-client";
 import "./App.css";
 
-const socket = io("http://localhost:5000");
+const socket = io("https://gossip-io-lyst.onrender.com");
 
 function App() {
   const [msg, setMsg] = useState("");
